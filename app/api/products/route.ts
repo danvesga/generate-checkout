@@ -9,8 +9,11 @@ export async function GET() {
     }
     const data = await response.json();
     return NextResponse.json(data);
-  } catch (error: any) {
-    console.error('API Error:', error.message);
+  } catch (error) {
+    let message = 'Unknown Error'
+    if (error instanceof Error) message = error.message
+
+    console.error('API Error:', message);
     return NextResponse.json({ error: 'Failed to fetch data' }, { status: 500 });
   }
 }
