@@ -4,6 +4,15 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState , useEffect } from "react";
 import Header from '@/app/ui/header';
 
+interface Product {
+  id: string;
+  name: string;
+  categories: string[];
+  price: string;
+  stars: number;
+  quantity: number
+}
+
 export default function Page() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -40,7 +49,7 @@ export default function Page() {
           w3={'40%'}
         />
         {selectedItems.length > 0 ? (
-          selectedItems.map((item: any) => (
+          selectedItems.map((item: Product) => (
             <Item2
               key={item.id}
               name={item.name}

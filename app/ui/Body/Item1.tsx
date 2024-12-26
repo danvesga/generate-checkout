@@ -33,7 +33,7 @@ const Item1 = ({ name, tag, quantity, price , stars , onToggle , isSelected , se
     return (
         <div style={{width: '100%', height: '25%', paddingLeft: 16, paddingRight: 16, justifyContent: 'flex-start', alignItems: 'flex-start', gap: 72, display: 'inline-flex'}}>
             <div className={`w-10 h-10 flex items-center justify-center border ${isSelected? "bg-blue-700" : "border-black"} rounded`} onClick={toggleStatus}>
-                {isSelected && <Check />}
+                {status == "selected" && <Check />}
             </div>
 
             <div style={{flex: 1, height: 162, justifyContent: 'flex-start', alignItems: 'center', gap: 16, display: 'flex'}}>

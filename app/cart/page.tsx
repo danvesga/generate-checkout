@@ -19,21 +19,17 @@ export default function Page() {
   const [selectedItems, setSelectedItems] = useState<Product[]>([]);
   const router = useRouter();
 
-  const [items, setItems] = useState({
-    itemList: [""],
-  });
-
   const handleStepClick = () => {
     const encodedItems = encodeURIComponent(JSON.stringify(selectedItems));
     console.log("Selected Items:", selectedItems);
     router.push(`/payment?items=${encodedItems}`);
   };
 
-  const handleItemToggle = (item: any) => {
+  const handleItemToggle = (item: Product) => {
     setSelectedItems((prev) =>
       prev.some((i) => i === item)
-        ? prev.filter((i) => i !== item) // Remove if already selected
-        : [...prev, item] // Add the full item object if not selected
+        ? prev.filter((i) => i !== item)
+        : [...prev, item] 
     );
   };
 
@@ -55,7 +51,7 @@ export default function Page() {
     async function fetchData() {
       const response = await fetch('/api/products');
       const result = await response.json();
-      setData(result.map((item: any) => ({ ...item, quantity: 1 })));
+      setData(result.map((item: Product) => ({ ...item, quantity: 1 })));
     }
     
     fetchData();
