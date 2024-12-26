@@ -1,6 +1,6 @@
 "use client"
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useState , useEffect } from "react";
+import React, { useState , useEffect, Suspense } from "react";
 import Item3 from '@/app/ui/Body/Item3';
 import Header from '@/app/ui/header';
 
@@ -14,6 +14,14 @@ interface Product {
 }
 
 export default function Page() {
+  return (
+    <Suspense fallback={<p>Loading payment details...</p>}>
+      <CheckoutContent />
+    </Suspense>
+  );
+}
+
+function CheckoutContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const items = searchParams.get("items");
@@ -37,20 +45,23 @@ export default function Page() {
           w2={'32%'}
           w3={'40%'}
         />
-        {selectedItems.length > 0 ? (
-          selectedItems.map((item: Product) => (
-            <Item3
-              key={item.id}
-              name={item.name}
-              tag={item.categories && item.categories.length > 0 ? item.categories[0] : 'Unknown'}
-              quantity={item.quantity}
-              price={`$${item.price || 0}`}
-              stars={item.stars / 100 || 0}
-            />
-          ))
-        ) : (
-          <p>No items selected</p>
-        )}
+        <Suspense fallback={<p>Loading items...</p>}>
+          {selectedItems.length > 0 ? (
+            selectedItems.map((item: Product) => (
+              <Item3
+                key={item.id}
+                name={item.name}
+                tag={item.categories && item.categories.length > 0 ? item.categories[0] : 'Unknown'}
+                quantity={item.quantity}
+                price={`$${item.price || 0}`}
+                stars={item.stars / 100 || 0}
+              />
+            ))
+          ) : (
+            <p>No items selected</p>
+          )}
+        </Suspense>
+
         <div style={{width: '100%', textAlign: 'right', color: 'black', fontSize: 20, fontFamily: 'Inter', fontWeight: '400', wordWrap: 'break-word'}}>Total cost: ${totalCost.toFixed(2)} </div>
         <div style={{width: '100%', height: '100%', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-end', gap: 8, display: 'inline-flex'}}>
           <div onClick={() => handleStepClick()} style={{paddingLeft: 16, paddingRight: 16, paddingTop: 12, paddingBottom: 12, borderRadius: 100, border: '1px black solid', justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'inline-flex'}}>

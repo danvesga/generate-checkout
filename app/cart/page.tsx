@@ -49,9 +49,17 @@ export default function Page() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch('/api/products');
-      const result = await response.json();
-      setData(result.map((item: Product) => ({ ...item, quantity: 1 })));
+      try {
+        const response = await fetch('/api/products');
+        if (!response.ok) throw new Error('Failed to fetch data');
+        const result = await response.json();
+        setData(result.map((item: Product) => ({ ...item, quantity: 1 })));
+      } catch (error) {
+        let message = 'Unknown Error'
+        if (error instanceof Error) message = error.message
+
+        console.error('API Error:', message);
+      }
     }
     
     fetchData();

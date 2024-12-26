@@ -1,7 +1,7 @@
 "use client"
 import Item2 from '@/app/ui/Body/Item2';
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useState , useEffect } from "react";
+import React, { useState , useEffect , Suspense} from "react";
 import Header from '@/app/ui/header';
 
 interface Product {
@@ -14,6 +14,14 @@ interface Product {
 }
 
 export default function Page() {
+  return (
+    <Suspense fallback={<p>Loading payment details...</p>}>
+      <PaymentContent />
+    </Suspense>
+  );
+}
+
+function PaymentContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const items = searchParams.get("items");
